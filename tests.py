@@ -1,6 +1,8 @@
 import unittest
 import io
+import numpy.testing as npt
 import symmetrize_xyz
+import modify_xyz
 import xyz_n
 
 
@@ -37,6 +39,15 @@ class TestAmmonia(unittest.TestCase, CommonSymmetrize):
     xyz_data = xyz_ammonia
     pgrp = 'D3h'
     tolerance = 0.01
+
+
+class TestModify(unittest.TestCase):
+    def test1(self):
+        xyz = xyz_n.read_xyz_fobj(io.StringIO(xyz_methylene), fname='methylene')
+        xyz1 = modify_xyz.modify(xyz, ['origin', '0'])
+        npt.assert_array_equal(xyz1[0][1], [0, 0, 0])
+        xyz2 = modify_xyz.modify(xyz, ['origin', '0', 'rotx', '90.0'])
+        npt.assert_array_equal(xyz2[0][1], [0, 0, 0])
 
 
 if __name__ == '__main__':
