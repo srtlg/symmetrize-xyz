@@ -35,6 +35,7 @@ def main(infile, tolerance=0.7, target_point_group='C2h', xyzin=None):
         raise RuntimeError('something went wrong')
     if m.group(1) != target_point_group:
         raise AssertionError(infile+' got point group '+m.group(1))
+    symmol.wait()
 
 
 if __name__ == '__main__':
