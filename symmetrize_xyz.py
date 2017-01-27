@@ -19,7 +19,8 @@ def main(infile, tolerance=0.7, target_point_group='C2h', xyzin=None):
     if xyzin is None:
         xyzin = read_xyz(infile)
 
-    symmol = Popen('%s/symmol'%(os.path.dirname(__file__)), stdin=PIPE, stdout=PIPE)
+    path = os.path.dirname(os.path.abspath(__file__))
+    symmol = Popen('%s/symmol' % path, stdin=PIPE, stdout=PIPE)
 
     symmol.stdin.write(('%d\n%f\n'%(len(xyzin), tolerance)).encode('ascii'))
     for el, coord in xyzin:
