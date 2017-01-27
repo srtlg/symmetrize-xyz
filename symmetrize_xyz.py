@@ -21,13 +21,13 @@ def main(infile, tolerance=0.7, target_point_group='C2h', xyzin=None):
 
     symmol = Popen('%s/symmol'%(os.path.dirname(__file__)), stdin=PIPE, stdout=PIPE)
 
-    symmol.stdin.write('%d\n%f\n'%(len(xyzin), tolerance))
-    for el,coord in xyzin:
-        symmol.stdin.write('%d %f %f %f\n'%((el,)+tuple(coord)))
+    symmol.stdin.write(('%d\n%f\n'%(len(xyzin), tolerance)).encode('ascii'))
+    for el, coord in xyzin:
+        symmol.stdin.write(('%d %f %f %f\n'%((el,)+tuple(coord))).encode('ascii'))
     symmol.stdin.close()
 
-    out = symmol.stdout.read()
-    sys.stderr.write(out)
+    out = symmol.stdout.read().decode('utf-8')
+    print(out, file=sys.stderr)
     symmol.stdout.close()
     m = _match_point_group.search(out)
     if m is None:
