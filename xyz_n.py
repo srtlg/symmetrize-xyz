@@ -6,15 +6,16 @@ from elements import element_to_atomic_number
 
 _xyz_parser = re.compile(' *([A-Za-z0-9]+) +([^ ]+) +([^ ]+) +([^ ]+)')
 _log = logging.getLogger('xyz')
+
 def read_xyz(fname):
     """ return a sequence for the molecule specified in `fname`.
     Conventional XYZ with two-line header as well as coordinate only XYZ are supported.
     Element labels are converted to atomic numbers when necessary. """
     with open(fname, 'r') as f:
-        return read_xyz_fobj(f)
+        return read_xyz_fobj(f, fname=fname)
 
 
-def read_xyz_fobj(fobj):
+def read_xyz_fobj(f, fname=''):
     first_line = f.readline().strip()
     if first_line.isdigit(): 
         _log.info('Reading conventional XYZ %s (%s)', f.readline().strip(), fname)
