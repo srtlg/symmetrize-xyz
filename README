@@ -1,0 +1,18 @@
+USAGE
+
+
+cat>methylene.xyz<<EOF
+ C        0.000  0.000  -0.158
+ H       -0.857  0.000   0.57
+ H        0.857  0.000   0.56
+EOF
+
+python symmetrize_xyz.py methylene.xyz 0.03 C2v
+
+cat symmetrized/methylene.xyz
+
+
+python modify_xyz.py methylene.xyz origin 0 rotx 90
+6 0.000000 0.000000 0.000000
+1 -0.857000 -0.728000 0.000000
+1 0.857000 -0.718000 0.000000
