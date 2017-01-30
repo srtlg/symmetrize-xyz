@@ -16,3 +16,6 @@ python modify_xyz.py methylene.xyz origin 0 rotx 90
 6 0.000000 0.000000 0.000000
 1 -0.857000 -0.728000 0.000000
 1 0.857000 -0.718000 0.000000
+
+
+python follow_vibdisp.py exc1-freq.out -n 20 -s 0.01 -c > exc1-freq-m0.xyz
