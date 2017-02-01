@@ -8,6 +8,7 @@ output is compatible with ORCA multistep xyz files
 from __future__ import print_function
 import argparse
 import sys
+import numpy as np
 from cclib.io import ccopen
 from cclib.parser.utils import PeriodicTable
 
@@ -22,6 +23,20 @@ def _parse_arg():
     return p.parse_args()
 
 
+def analyze_current_scan(coord, displacement, args):
+    if args.central:
+        start = coord - (args.scale * args.number_steps / 2.0) * displacement
+        stop  = coord + (args.scale * (args.number_steps - 1)/ 2.0) * displacement
+    else:
+        start = coord
+        stop  = coord + args.scale * args.number_steps * displacement
+    d = np.sqrt(np.sum((start - stop)**2, axis=1))
+    print('mean displacement', np.mean(d), file=sys.stderr)
+    print('std displacement', np.std(d), file=sys.stderr)
+    print('min displacement', np.min(d), file=sys.stderr)
+    print('max displacement', np.max(d), file=sys.stderr)
+
+
 def main():
     args = _parse_arg()
     data = ccopen(args.output_file).parse()
@@ -30,6 +45,7 @@ def main():
     element_list = [pt.element[Z] for Z in data.atomnos]
     print('coordinates', data.atomcoords[0], file=sys.stderr)
     print('displacements', data.vibdisps[args.mode], file=sys.stderr)
+
     for i in range(args.number_steps):
         print(natom)
         if args.central:
@@ -44,6 +60,7 @@ def main():
             print()
         else:
             print('>')
+    analyze_current_scan(data.atomcoords[0], data.vibdisps[args.mode], args)
 
 
 if __name__ == '__main__':
