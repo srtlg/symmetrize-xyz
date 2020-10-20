@@ -1,0 +1,18 @@
+!    -*- f90 -*-
+! Note: the context of this file is case sensitive.
+
+python module symmol ! in 
+    interface  ! in :symmol
+        subroutine symmol(nat,tolerance,coordinates,atomicnumbers,pointgroup) ! in :symmol:symmol.f90
+            use globalarrays
+            integer, optional,intent(in),check(shape(coordinates,1)==nat),depend(coordinates) :: nat=shape(coordinates,1)
+            real(8), intent(inout) :: tolerance
+            real(8), dimension(3,nat),intent(inout) :: coordinates
+            integer, dimension(nat),intent(in),depend(nat) :: atomicnumbers
+            character*3 intent(inout) :: pointgroup
+        end subroutine symmol
+    end interface 
+end python module symmol
+
+! This file was auto-generated with f2py (version:2).
+! See http://cens.ioc.ee/projects/f2py2e/

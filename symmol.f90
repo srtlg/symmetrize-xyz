@@ -30,25 +30,25 @@
 
 
 !     -----------------------------------------------------------------
-      PROGRAM Main
+!     PROGRAM Main
 !     -----------------------------------------------------------------
-      IMPLICIT DOUBLE PRECISION (a-h,o-z)
-      PARAMETER (NMA = 300)
-      DIMENSION coordinates(3,NMA)
-      INTEGER atomicNumbers(NMA)
-      CHARACTER*3 pointGroup
- 
-      READ(*,*) nAtoms
-      IF (nAtoms .gt. NMA) STOP 'Too many atoms in Symmol'
-      READ(*,*) tolerance
-      DO i = 1,nAtoms
-         READ (*,*) atomicNumbers(i),  (coordinates(k,i), k=1,3)
-         IF (atomicNumbers(i) .gt. 103) STOP 'Z too high in SymMol'
-      ENDDO
+!     IMPLICIT DOUBLE PRECISION (a-h,o-z)
+!     PARAMETER (NMA = 300)
+!     DIMENSION coordinates(3,NMA)
+!     INTEGER atomicNumbers(NMA)
+!     CHARACTER*3 pointGroup
+!
+!     READ(*,*) nAtoms
+!     IF (nAtoms .gt. NMA) STOP 'Too many atoms in Symmol'
+!     READ(*,*) tolerance
+!     DO i = 1,nAtoms
+!        READ (*,*) atomicNumbers(i),  (coordinates(k,i), k=1,3)
+!        IF (atomicNumbers(i) .gt. 103) STOP 'Z too high in SymMol'
+!     ENDDO
 
-      CALL SymMol(nAtoms, Tolerance,  Coordinates, atomicNumbers, pointgroup)
+!     CALL SymMol(nAtoms, Tolerance,  Coordinates, atomicNumbers, pointgroup)
 
-      END
+!     END
 
 
 
@@ -100,19 +100,16 @@
 
       END MODULE
 
-
-
 !     -----------------------------------------------------------------
       SUBROUTINE SymMol(nat, Tolerance, coordinates, atomicNumbers, pointGroup)
 !     -----------------------------------------------------------------
-
       USE GlobalArrays
-      IMPLICIT DOUBLE PRECISION (a-h,o-z)
-
-      CHARACTER*3 pointGroup
-      DIMENSION coordinates(3,*)
-      INTEGER   atomicNumbers(nat)
-
+      
+      integer, intent(in) :: nat
+      real(8), intent(inout) :: Tolerance
+      real(8), dimension(3,nat), intent(inout) :: coordinates
+      integer, dimension(nat), intent(in) :: atomicNumbers
+      character(len=3), intent(inout) :: pointGroup
 
       natoms = nat
 
@@ -172,16 +169,14 @@
 
       WRITE(*,10) Tolerance
    10 FORMAT ('Symmetrized Orthogonal Coordinates Tol = ', F6.3)
-      DO i = 1,nAtoms
-         WRITE(20,'(i2, 3(f16.10))') atomicNumbers(i), (Coordinates(k,I),k=1,3)
-      ENDDO
+!     DO i = 1,nAtoms
+!        WRITE(20,'(i2, 3(f16.10))') atomicNumbers(i), (Coordinates(k,I),k=1,3)
+!     ENDDO
 
       DEALLOCATE (X, AMAS, MSP, SX, SIG, DXM, MLG)
       DEALLOCATE (SIM, DEV, CSM, MTG, RMS, PPU, PPO)
 
       END
-
-
 
 !     ------------------------------------------------------------------
       SUBROUTINE asymunit(MK,IASU,N)

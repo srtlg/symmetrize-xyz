@@ -1,3 +1,8 @@
+BUILDING
+
+python setup.py build_ext --inplace
+
+
 USAGE
 
 
@@ -9,7 +14,7 @@ EOF
 
 python symmetrize_xyz.py methylene.xyz 0.03 C2v
 
-cat symmetrized/methylene.xyz
+cat methylene-C2h.xyz
 
 
 python modify_xyz.py methylene.xyz origin 0 rotx 90

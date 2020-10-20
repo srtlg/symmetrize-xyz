@@ -6,36 +6,28 @@ usage
 symmetrize_xyz  <xyz-file>  [<tolerance> [<target point-group>]]
 
 """
-import os
-import re
 import sys
-from subprocess import Popen, PIPE
-_match_point_group = re.compile('Schoenflies symbol = *([^ ]+)')
+import numpy as np
 
-from xyz_n import read_xyz
+from xyz_n import read_xyz, write_xyz
+from symmol import symmol
 
 
 def main(infile, tolerance=0.7, target_point_group='C2h', xyzin=None):
     if xyzin is None:
         xyzin = read_xyz(infile)
-
-    path = os.path.dirname(os.path.abspath(__file__))
-    symmol = Popen('%s/symmol' % path, stdin=PIPE, stdout=PIPE)
-
-    symmol.stdin.write(('%d\n%f\n'%(len(xyzin), tolerance)).encode('ascii'))
-    for el, coord in xyzin:
-        symmol.stdin.write(('%d %f %f %f\n'%((el,)+tuple(coord))).encode('ascii'))
-    symmol.stdin.close()
-
-    out = symmol.stdout.read().decode('utf-8')
-    print(out, file=sys.stderr)
-    symmol.stdout.close()
-    m = _match_point_group.search(out)
-    if m is None:
-        raise RuntimeError('something went wrong')
-    if m.group(1) != target_point_group:
+    
+    atomic_numbers = np.array([el for el, coord in xyzin], dtype='i')
+    coordinates = np.array([coord for el, coord in xyzin])
+    point_group = target_point_group
+    symmol(tolerance, coordinates.T, atomic_numbers, point_group)
+    if point_group != target_point_group:
         raise AssertionError(infile+' got point group '+m.group(1))
-    symmol.wait()
+    if infile is not None:
+        outfile = infile.replace('.xyz', '-%s.xyz' % point_group)
+        if outfile == infile: outfile += '-' + point_group
+        with open(outfile, 'w') as fout:
+            write_xyz(list(zip(atomic_numbers, coordinates)), fout)
 
 
 if __name__ == '__main__':
@@ -43,7 +35,4 @@ if __name__ == '__main__':
     tolerance = 0.7 if len(sys.argv) <= 2 else float(sys.argv[2])
     target_point_group = "C2h" if len(sys.argv) <= 3 else sys.argv[3]
     main(infile, tolerance, target_point_group)
-    if not os.path.isdir('symmetrized'):
-        os.mkdir('symmetrized')
-    os.rename('fort.20', 'symmetrized/%s'%sys.argv[1])
 
