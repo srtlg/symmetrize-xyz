@@ -427,7 +427,7 @@
 !     t(3) = vettore variazione angolare in radianti
 !
 
-      DIMENSION t(3), po(3), pu(3), rpu(3)
+      DIMENSION t(3), po(3), pu(3)
       DIMENSION RX(3,3), RY(3,3), RZ(3,3), RR(3,3)
 
       call vrload(RX,0.d0,9)
@@ -755,7 +755,7 @@
       DIMENSION XO(3,NMA), PESO(NMA), MN(NMA), MK(NMA,NMG), MD(NMA,2)
       DIMENSION eqp(4), dp(5), vd(3,5), A(3,3), B(3,3), V(3)
       DIMENSION io(5), mp(5)
-      LOGICAL   ico
+!     LOGICAL   ico
 
       REAL*8,  DIMENSION (:), ALLOCATABLE :: DA
       INTEGER, DIMENSION (:), ALLOCATABLE :: meq
@@ -1282,7 +1282,7 @@
       PARAMETER (MaxAtomicNumber = 103)
       INTEGER   atomicNumbers(nAtoms), Z, ITT
       CHARACTER*2 SIMBO(MaxAtomicNumber)
-      REAL*8 AtomicMass(MaxAtomicNumber), Radii(MaxAtomicNumber)
+      REAL*8 AtomicMass(MaxAtomicNumber)
 
       DATA (AtomicMass(i), i=1,2)  /1.00794, 4.002602/
       DATA (AtomicMass(i), i=3,10) /6.941, 9.012182, 10.811, 12.011,    &
@@ -2125,7 +2125,7 @@
       IMPLICIT DOUBLE PRECISION (a-h,o-z)
       PARAMETER (maxorder=8)
 
-      CHARACTER*3 lbls
+!     CHARACTER*3 lbls
       CHARACTER*3 pointGroup
       
       DIMENSION Coordinates(3,NAtoms)
