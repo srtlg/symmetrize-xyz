@@ -1,7 +1,7 @@
 from numpy.distutils.core import Extension
 from numpy.distutils.core import setup
 
-symmol = Extension(name='symmol', sources=['symmol.f90'])
+symmol = Extension(name='symmol', sources=['symmol.f90', 'symmol.pyf'])
 
 
 setup(name='Symmetrize XYZ',
