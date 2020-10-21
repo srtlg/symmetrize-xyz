@@ -109,7 +109,7 @@
       real(8), intent(inout) :: Tolerance
       real(8), dimension(3,nat), intent(inout) :: coordinates
       integer, dimension(nat), intent(in) :: atomicNumbers
-      character(len=3), intent(inout) :: pointGroup
+      character(len=3), intent(out) :: pointGroup
 
       natoms = nat
 
@@ -172,6 +172,8 @@
 !     DO i = 1,nAtoms
 !        WRITE(20,'(i2, 3(f16.10))') atomicNumbers(i), (Coordinates(k,I),k=1,3)
 !     ENDDO
+      
+      WRITE(*,*) 'pointGroup ', pointGroup
 
       DEALLOCATE (X, AMAS, MSP, SX, SIG, DXM, MLG)
       DEALLOCATE (SIM, DEV, CSM, MTG, RMS, PPU, PPO)

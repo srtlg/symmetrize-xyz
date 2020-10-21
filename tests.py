@@ -27,7 +27,8 @@ class CommonSymmetrize(object):
 
     def test(self):
         xyz = xyz_n.read_xyz_fobj(io.StringIO(self.xyz_data), fname=self.__class__.__name__)
-        symmetrize_xyz.main(None, tolerance=self.tolerance, target_point_group=self.pgrp, xyzin=xyz)
+        final_pgrp = symmetrize_xyz.main(None, tolerance=self.tolerance, xyzin=xyz)
+        self.assertEqual(self.pgrp, final_pgrp)
 
 
 class TestMethylene(unittest.TestCase, CommonSymmetrize):

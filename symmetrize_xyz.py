@@ -3,7 +3,7 @@
 usage
 =====
 
-symmetrize_xyz  <xyz-file>  [<tolerance> [<target point-group>]]
+symmetrize_xyz  <xyz-file>  [<tolerance>]
 
 """
 import sys
@@ -13,26 +13,25 @@ from xyz_n import read_xyz, write_xyz
 from symmol import symmol
 
 
-def main(infile, tolerance=0.7, target_point_group='C2h', xyzin=None):
+def main(infile, tolerance=0.7, xyzin=None):
     if xyzin is None:
         xyzin = read_xyz(infile)
     
     atomic_numbers = np.array([el for el, coord in xyzin], dtype='i')
     coordinates = np.array([coord for el, coord in xyzin])
-    point_group = target_point_group
-    symmol(tolerance, coordinates.T, atomic_numbers, point_group)
-    if point_group != target_point_group:
-        raise AssertionError(infile+' got point group '+m.group(1))
+    point_group = symmol(tolerance, coordinates.T, atomic_numbers)
+    determined_point_group = point_group.decode('ascii')
     if infile is not None:
-        outfile = infile.replace('.xyz', '-%s.xyz' % point_group)
-        if outfile == infile: outfile += '-' + point_group
+        outfile = infile.replace('.xyz', '-%s.xyz' % determined_point_group)
+        if outfile == infile: outfile += '-' + determined_point_group
         with open(outfile, 'w') as fout:
             write_xyz(list(zip(atomic_numbers, coordinates)), fout)
+    else:
+        return determined_point_group
 
 
 if __name__ == '__main__':
     infile = sys.argv[1]
     tolerance = 0.7 if len(sys.argv) <= 2 else float(sys.argv[2])
-    target_point_group = "C2h" if len(sys.argv) <= 3 else sys.argv[3]
-    main(infile, tolerance, target_point_group)
+    main(infile, tolerance)
 

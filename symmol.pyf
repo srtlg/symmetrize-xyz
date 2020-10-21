@@ -6,10 +6,10 @@ python module symmol ! in
         subroutine symmol(nat,tolerance,coordinates,atomicnumbers,pointgroup) ! in :symmol:symmol.f90
             use globalarrays
             integer, optional,intent(in),check(shape(coordinates,1)==nat),depend(coordinates) :: nat=shape(coordinates,1)
-            real(8), intent(inout) :: tolerance
-            real(8), dimension(3,nat),intent(inout) :: coordinates
-            integer, dimension(nat),intent(in),depend(nat) :: atomicnumbers
-            character*3 intent(inout) :: pointgroup
+            real(kind=8) intent(inout) :: tolerance
+            real(kind=8) dimension(3,nat),intent(inout) :: coordinates
+            integer dimension(nat),intent(in),depend(nat) :: atomicnumbers
+            character*3 intent(out) :: pointgroup
         end subroutine symmol
     end interface 
 end python module symmol
